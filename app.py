@@ -33,7 +33,7 @@ def generate_image():
             "A national-level hackathon bringing together innovators."
         )
 
-        # Prompt template
+        # Prompt
         text_input = (
             f"A futuristic, collectible NFT memento token for the event: '{event_name}'.\n\n"
             f"**Core Concept:** '{event_description}'.\n\n"
@@ -51,17 +51,17 @@ def generate_image():
         )
 
         # Extract image
-        image_found = False
         for part in response.candidates[0].content.parts:
             if hasattr(part, "inline_data") and part.inline_data:
                 image_data = part.inline_data.data
                 image = Image.open(BytesIO(image_data))
 
-                # Save
-                output_filename = "output.png"
-                image.save(output_filename)
+                # Keep everything in memory
+                img_io = BytesIO()
+                image.save(img_io, format="PNG")
+                img_io.seek(0)
 
-                return send_file(output_filename, mimetype="image/png")
+                return send_file(img_io, mimetype="image/png")
 
         return jsonify({"error": "No image data found in response."}), 500
 
