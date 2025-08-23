@@ -8,7 +8,7 @@ from flask_cors import CORS
 # Load environment variables
 load_dotenv()
 app = Flask(__name__)
-CORS(app, resources={r"/": {"origins": ["", "https://nft-logo-generator.vercel.app/"]}})
+CORS(app, resources={r"/*": {"origins": ["*", "https://nft-logo-generator.vercel.app/"]}})
 try:
     api_key = os.environ["GOOGLE_API_KEY"]
     genai.configure(api_key=api_key)
@@ -76,4 +76,5 @@ def home():
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
+
 
